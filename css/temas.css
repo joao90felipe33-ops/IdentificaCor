@@ -1,0 +1,143 @@
+:root {
+  --navy: #2f3b69;
+  --navy-dark: #222d55;
+  --navy-soft: #eef0f7;
+  --ink: #202642;
+  --muted: #565e75;
+  --label: #59628d;
+  --faint: #5b6276;
+  --link: #46528a;
+  --accent: #5d6da6;
+  --line: #e7e9f0;
+  --border: #c4cada;
+  --border-strong: #aab2c8;
+  --border-hover: #8f99b8;
+  --control-border: #8089ac;
+  --surface: #ffffff;
+  --surface-alt: #fafbfe;
+  --surface-hover: #f1f3fa;
+  --field: #e9ecf6;
+  --canvas-bg: #f3f4f8;
+  --page: #f7f8fc;
+  --ok-bg: #edf4ed;
+  --ok-text: #3d5a3b;
+  --about-bg: #eef0f7;
+  --about-text: #475170;
+  --about-strong: #3b4562;
+  --btn-bg: #2f3b69;
+  --btn-text: #ffffff;
+  --btn-hover: #222d55;
+  --toast-bg: #222d55;
+  --toast-text: #ffffff;
+  --focus: #4c5cab;
+  --swatch-border: #0000001a;
+  --shadow: #27345c08;
+  --radius: 18px;
+}
+
+
+/* ==============================================================
+   PALETAS PARA OS MODOS DE DALTONISMO
+   Edite os códigos HEX abaixo para experimentar novas tonalidades.
+   Estes modos ADAPTAM apenas a interface; NÃO simulam a percepção
+   visual nem filtram a imagem carregada pelo usuário.
+   O alto contraste tem prioridade sobre os modos.
+   ============================================================== */
+html[data-vision="protanopia"]:not([data-contrast="high"]) {
+  --navy: #174a75;
+  --navy-dark: #143a58;
+  --navy-soft: #e9f3f9;
+  --accent: #945c15;
+  --label: #405d70;
+  --link: #22587c;
+  --field: #e6f0f8;
+  --focus: #125c88;
+  --btn-bg: #174a75;
+  --btn-hover: #103550;
+  --toast-bg: #143a58;
+}
+html[data-vision="deuteranopia"]:not([data-contrast="high"]) {
+  --navy: #353f82;
+  --navy-dark: #292d64;
+  --navy-soft: #eff0fb;
+  --accent: #84541a;
+  --label: #505580;
+  --link: #434688;
+  --field: #edecfa;
+  --focus: #4546a1;
+  --btn-bg: #353f82;
+  --btn-hover: #282e63;
+  --toast-bg: #292d64;
+}
+html[data-vision="tritanopia"]:not([data-contrast="high"]) {
+  --navy: #842b4c;
+  --navy-dark: #5b1e36;
+  --navy-soft: #faeef2;
+  --accent: #93344b;
+  --label: #794358;
+  --link: #80314f;
+  --field: #f7e9ee;
+  --focus: #922a51;
+  --btn-bg: #842b4c;
+  --btn-hover: #5b1e36;
+  --toast-bg: #5b1e36;
+}
+html[data-vision="acromatopsia"]:not([data-contrast="high"]) {
+  --navy: #303030;
+  --navy-dark: #171717;
+  --navy-soft: #ebebeb;
+  --ink: #202020;
+  --muted: #494949;
+  --label: #414141;
+  --faint: #555555;
+  --link: #303030;
+  --accent: #444444;
+  --line: #d0d0d0;
+  --border: #a0a0a0;
+  --border-strong: #858585;
+  --field: #eeeeee;
+  --surface-alt: #fafafa;
+  --surface-hover: #f0f0f0;
+  --page: #f8f8f8;
+  --focus: #111111;
+  --btn-bg: #303030;
+  --btn-hover: #111111;
+  --toast-bg: #171717;
+}
+
+/* Alto contraste: fundo preto, texto branco e destaques em amarelo. */
+html[data-contrast="high"] {
+  --navy: #ffe14d;
+  --navy-dark: #ffffff;
+  --navy-soft: #262626;
+  --ink: #ffffff;
+  --muted: #ececec;
+  --label: #ffe14d;
+  --faint: #e0e0e0;
+  --link: #ffe14d;
+  --accent: #ffe14d;
+  --line: #8a8a8a;
+  --border: #9a9a9a;
+  --border-strong: #cfcfcf;
+  --border-hover: #ffffff;
+  --control-border: #ffffff;
+  --surface: #000000;
+  --surface-alt: #0d0d0d;
+  --surface-hover: #1f1f1f;
+  --field: #262626;
+  --canvas-bg: #111111;
+  --page: #000000;
+  --ok-bg: #0d2b0d;
+  --ok-text: #9dff9d;
+  --about-bg: #0d0d0d;
+  --about-text: #f0f0f0;
+  --about-strong: #ffffff;
+  --btn-bg: #ffe14d;
+  --btn-text: #000000;
+  --btn-hover: #ffffff;
+  --toast-bg: #ffe14d;
+  --toast-text: #000000;
+  --focus: #7df9ff;
+  --swatch-border: #ffffffb3;
+  --shadow: transparent;
+}

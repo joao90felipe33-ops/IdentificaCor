@@ -1,0 +1,7 @@
+/* Estilos separados por responsabilidade. Mantenha os imports nesta ordem. */
+@import url("css/temas.css");
+@import url("css/estrutura.css");
+@import url("css/filtros.css");
+@import url("css/componentes.css");
+@import url("css/comparador.css");
+@import url("css/responsivo.css");

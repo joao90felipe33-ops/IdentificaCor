@@ -1,0 +1,39 @@
+/* Menu acessível dos filtros de daltonismo */
+.vision-control { position: relative; min-width: 210px; }
+.vision-trigger {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: 40px; padding: 8px 12px; cursor: pointer;
+  color: var(--btn-text); background: var(--btn-bg);
+  border: 1.5px solid var(--btn-bg); border-radius: 10px;
+  font-size: .8125rem; line-height: 1.3; font-weight: 700;
+  list-style: none; user-select: none;
+  transition: background .2s, box-shadow .2s;
+}
+.vision-trigger::-webkit-details-marker { display: none; }
+.vision-trigger svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.vision-trigger:hover, .vision-control[open] .vision-trigger { background: var(--btn-hover); box-shadow: 0 4px 14px #2f3b6928; }
+.vision-chevron { width: 8px; height: 8px; margin: -3px 0 0 4px; flex: 0 0 auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .2s; }
+.vision-control[open] .vision-chevron { transform: translateY(3px) rotate(225deg); }
+.vision-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 50;
+  width: 246px; max-width: calc(100vw - 28px); padding: 7px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; box-shadow: 0 14px 32px #1c254533;
+}
+.vision-option {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 10px 11px; border: 0; border-radius: 8px; cursor: pointer;
+  background: transparent; color: var(--ink); text-align: left;
+  font-size: .8125rem; font-weight: 600;
+}
+.vision-option:hover, .vision-option.is-active { background: var(--surface-hover); }
+.vision-option.is-active { font-weight: 800; }
+.vision-swatch { width: 17px; height: 17px; flex: 0 0 17px; border-radius: 50%; border: 1px solid var(--swatch-border); background: #2f3b69; }
+.vision-option[data-vision="protanopia"] .vision-swatch { background: #174a75; }
+.vision-option[data-vision="deuteranopia"] .vision-swatch { background: #353f82; }
+.vision-option[data-vision="tritanopia"] .vision-swatch { background: #842b4c; }
+.vision-option[data-vision="acromatopsia"] .vision-swatch { background: #555555; }
+.vision-check { margin-left: auto; visibility: hidden; font-size: 1rem; color: var(--navy); }
+.vision-option.is-active .vision-check { visibility: visible; }
+.vision-note { margin: -5px 0 16px; color: var(--muted); font-size: .8125rem; line-height: 1.5; }
+.vision-explanation { margin-top: 12px !important; }

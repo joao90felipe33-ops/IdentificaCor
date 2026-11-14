@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2f3b69">
+  <meta name="description" content="Identifica Cor: ferramenta simples para consultar cores em imagens.">
+  <title>Identifica Cor | Acessibilidade visual</title>
+  <link rel="icon" type="image/png" sizes="512x512" href="imagens/icone.png?v=2">
+  <link rel="apple-touch-icon" href="imagens/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    /* Aplica as preferências salvas (texto e contraste) antes de desenhar a página. */
+    try {
+      var s = JSON.parse(localStorage.getItem("identificaCor.settings")) || {};
+       if (s.contrast) document.documentElement.setAttribute("data-contrast", "high");
+       var modos = ["normal", "protanopia", "deuteranopia", "tritanopia", "acromatopsia"];
+       if (modos.includes(s.vision)) document.documentElement.setAttribute("data-vision", s.vision);
+      var f = [100, 115, 130][s.font | 0];
+      if (f) document.documentElement.style.fontSize = f + "%";
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <img class="brand-logo logo-normal" src="imagens/logo.png" alt="Identifica Cor - início">
+      <img class="brand-logo logo-contrast" src="imagens/logo-contraste.png" alt="Identifica Cor - início">
+    </a>
+    <span class="top-note">ACESSIBILIDADE VISUAL</span>
+    <div class="top-tools" role="group" aria-label="Ajustes de leitura">
+      <button id="fontDown" class="tool-button" type="button" aria-label="Diminuir o tamanho do texto" title="Diminuir texto">A−</button>
+      <button id="fontUp" class="tool-button tool-button-plus" type="button" aria-label="Aumentar o tamanho do texto" title="Aumentar texto">A+</button>
+       <button id="contrastToggle" class="tool-button" type="button" aria-pressed="false">
+         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor"/></svg>
+         Alto contraste
+       </button>
+       <details class="vision-control" id="visionControl">
+         <summary class="vision-trigger" id="visionTrigger" aria-describedby="visionNote">
+           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+             <path d="M4 7h16M7 12h10M10 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+           </svg>
+           Filtros de daltonismo
+           <span class="vision-chevron" aria-hidden="true"></span>
+         </summary>
+         <div class="vision-menu" role="group" aria-label="Escolher paleta de cores">
+           <button type="button" class="vision-option" data-vision="normal" aria-pressed="true"><span class="vision-swatch" aria-hidden="true"></span>Original<span class="vision-check" aria-hidden="true">✓</span></button>
+           <button type="button" class="vision-option" data-vision="protanopia" aria-pressed="false"><span class="vision-swatch" aria-hidden="true"></span>Protanopia<span class="vision-check" aria-hidden="true">✓</span></button>
+           <button type="button" class="vision-option" data-vision="deuteranopia" aria-pressed="false"><span class="vision-swatch" aria-hidden="true"></span>Deuteranopia<span class="vision-check" aria-hidden="true">✓</span></button>
+           <button type="button" class="vision-option" data-vision="tritanopia" aria-pressed="false"><span class="vision-swatch" aria-hidden="true"></span>Tritanopia<span class="vision-check" aria-hidden="true">✓</span></button>
+           <button type="button" class="vision-option" data-vision="acromatopsia" aria-pressed="false"><span class="vision-swatch" aria-hidden="true"></span>Acromatopsia<span class="vision-check" aria-hidden="true">✓</span></button>
+         </div>
+       </details>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> MAIS AUTONOMIA NO DIA A DIA</span>
+        <h1>Descubra as cores<br>da sua <span>imagem.</span></h1>
+        <p>Envie uma foto, selecione um ponto e veja o nome e os códigos da cor. Uma ferramenta de apoio para quem tem dificuldade em diferenciar algumas cores.</p>
+      </div>
+      <div class="hero-art">
+        <img class="hero-logo logo-normal" src="imagens/logo.png" alt="Logo Identifica Cor: paleta de cores com conta-gotas e o lema Descubra as cores, sem barreiras!">
+        <img class="hero-logo logo-contrast" src="imagens/logo-contraste.png" alt="Logo Identifica Cor: paleta de cores com conta-gotas e o lema Descubra as cores, sem barreiras!">
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="Identificador de cores">
+      <div class="section-heading">
+        <div>
+          <span class="step-label">FERRAMENTA</span>
+          <h2>Identificador de cores</h2>
+        </div>
+        <span class="private-label"><span aria-hidden="true">●</span> Imagem processada no seu dispositivo</span>
+      </div>
+
+       <p id="visionNote" class="vision-note" role="status">Os modos de cores alteram somente a interface, não as cores nem os códigos da imagem enviada.</p>
+       <div class="tool-grid">
+        <section class="image-panel panel">
+          <div class="panel-title">
+            <div><span class="number">01</span><h3>Sua imagem</h3></div>
+            <button id="changeImage" class="text-button" type="button" hidden>Trocar imagem</button>
+          </div>
+
+          <input id="imageInput" type="file" accept="image/*" hidden>
+          <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Selecionar uma imagem do dispositivo">
+            <div class="upload-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 15.5v3A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <strong>Escolha uma imagem</strong>
+            <span>Arraste um arquivo até aqui ou procure no dispositivo.</span>
+            <span class="file-types">JPG, PNG, WEBP</span>
+            <button id="chooseImage" class="primary-button" type="button">Selecionar imagem</button>
+          </div>
+
+          <div id="imageStage" class="image-stage" hidden>
+            <div class="canvas-wrap">
+              <canvas id="photoCanvas" aria-label="Imagem enviada. Clique ou toque em um ponto para identificar sua cor. No teclado, use as setas para mover o marcador e Enter para identificar." aria-describedby="canvasHelp" tabindex="0"></canvas>
+              <span id="pixelMarker" class="pixel-marker" aria-hidden="true" hidden></span>
+              <span id="compareMarkerA" class="compare-marker" aria-hidden="true" hidden>A</span>
+              <span id="compareMarkerB" class="compare-marker" aria-hidden="true" hidden>B</span>
+            </div>
+            <div id="canvasHelp" class="canvas-help"><span class="crosshair-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span> <span>Clique ou toque na imagem para selecionar uma cor. No teclado, use as setas para mover o marcador (Shift move mais rápido) e Enter para identificar.</span></div>
+          </div>
+          <p id="imageMessage" class="status-message" role="status">Sua imagem não é enviada para nenhum servidor.</p>
+        </section>
+
+        <aside class="result-panel panel">
+          <div class="panel-title">
+            <div><span class="number">02</span><h3>Cor identificada</h3></div>
+          </div>
+          <div id="emptyResult" class="empty-result">
+            <div class="empty-swatch" aria-hidden="true"><span>?</span></div>
+            <strong>Nenhuma cor selecionada</strong>
+            <p>Depois de enviar uma imagem, toque em qualquer ponto para descobrir a cor.</p>
+          </div>
+          <div id="colorResult" class="color-result" hidden>
+            <button id="largeSwatch" class="large-swatch" type="button" aria-haspopup="dialog" aria-label="Amostra da cor selecionada. Abrir cores semelhantes e combinações.">
+              <span class="swatch-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3Z"/><path d="m19 17 .7 1.3L21 19l-1.3.7L19 21l-.7-1.3L17 19l1.3-.7L19 17Z"/></svg><span>Explorar cores semelhantes e combinações</span><span class="swatch-arrow" aria-hidden="true">›</span></span>
+            </button>
+            <span class="result-caption">NOME APROXIMADO</span>
+            <div class="name-row">
+              <h4 id="colorName">Azul</h4>
+              <button id="speakColor" class="speak-button" type="button" aria-label="Ouvir o nome da cor">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4Z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                Ouvir
+              </button>
+            </div>
+            <div class="code-row">
+              <div><span>Código HEX</span><strong id="hexValue">#2F3B69</strong></div>
+              <button class="copy-button" data-copy="hex" type="button" aria-label="Copiar código hexadecimal">Copiar</button>
+            </div>
+            <div class="code-row">
+              <div><span>Valores RGB</span><strong id="rgbValue">47, 59, 105</strong></div>
+              <button class="copy-button" data-copy="rgb" type="button" aria-label="Copiar valores RGB">Copiar</button>
+            </div>
+            <p class="result-note">A cor é a média de uma pequena área (5×5 pixels) ao redor do ponto escolhido. O nome é uma aproximação: tons muito parecidos podem receber nomes semelhantes.</p>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Comparador: opcional e independente do identificador principal. -->
+      <section class="compare-panel panel" id="comparePanel" aria-labelledby="compareTitle">
+        <div class="compare-heading">
+          <div class="compare-title-group">
+            <span class="compare-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2.5" y="5" width="8" height="14" rx="2"/><rect x="13.5" y="5" width="8" height="14" rx="2"/>
+                <path d="M7 9v6M17.5 9v6"/>
+              </svg>
+            </span>
+            <div>
+              <span class="step-label">NOVA ATUALIZAÇÃO!!! </span>
+              <h3 id="compareTitle">Comparador de cores</h3>
+            </div>
+          </div>
+          <button id="compareToggle" type="button" class="compare-toggle" aria-pressed="false" aria-controls="compareWorkspace">
+            <span id="compareToggleLabel">Ativar comparador</span>
+          </button>
+        </div>
+        <p class="compare-intro">Descubra as diferenças entre dois pontos de uma mesma imagem, sem modificar a identificação principal.</p>
+
+        <div class="compare-workspace" id="compareWorkspace" hidden>
+          <div class="compare-guide">
+            <span class="compare-guide-icon" aria-hidden="true">◎</span>
+            <p id="compareStatus" role="status" aria-live="polite">Envie uma imagem e selecione a primeira cor.</p>
+            <a class="compare-jump" href="#photoCanvas">Ir para a imagem <span aria-hidden="true">↑</span></a>
+          </div>
+          <div class="compare-samples" aria-label="Cores em comparação">
+            <div class="compare-sample" id="compareSampleA">
+              <div class="compare-sample-top"><span class="compare-letter">A</span><span>Primeira cor</span></div>
+              <div class="compare-preview" id="comparePreviewA" aria-hidden="true"></div>
+              <strong id="compareNameA">Aguardando seleção</strong>
+              <code id="compareHexA">—</code>
+            </div>
+            <div class="compare-sample" id="compareSampleB">
+              <div class="compare-sample-top"><span class="compare-letter">B</span><span>Segunda cor</span></div>
+              <div class="compare-preview" id="comparePreviewB" aria-hidden="true"></div>
+              <strong id="compareNameB">Aguardando seleção</strong>
+              <code id="compareHexB">—</code>
+            </div>
+          </div>
+          <div id="compareSummary" class="compare-summary" hidden>
+            <div class="compare-summary-heading">
+              <span class="compare-summary-icon" aria-hidden="true">↔</span>
+              <strong>O que muda entre elas?</strong>
+            </div>
+            <p id="compareDescription"></p>
+            <p id="compareContrast" class="compare-contrast"></p>
+          <div class="compare-visual" aria-hidden="true">
+            <div class="compare-visual-outer" id="compareVisualA">
+              <div class="compare-visual-inner" id="compareVisualB">
+                <span class="compare-visual-label">
+                  Comparação visual
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <p class="compare-visual-caption">
+            Cor A ao redor • Cor B no centro
+          </p>
+
+          </div>
+          <div class="compare-actions">
+            <button type="button" id="compareReset" class="compare-secondary">Limpar comparação</button>
+            <button type="button" id="compareSpeak" class="compare-secondary" disabled>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4Z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              Ouvir resultado
+            </button>
+          </div>
+          <p class="compare-disclaimer">O contraste apresentado mede a diferença de luminância entre as duas cores. Ele não garante que todas as pessoas consigam distingui-las.</p>
+        </div>
+      </section>
+
+      <section class="palette-panel panel" aria-label="Cores principais da imagem">
+        <div class="history-heading">
+          <div><span class="number">03</span><h3>Cores principais da imagem</h3></div>
+        </div>
+        <div id="paletteBar" class="palette-bar" aria-hidden="true" hidden></div>
+        <div id="paletteList" class="history-list">
+          <p class="history-empty">Depois de enviar uma imagem, as cores mais presentes aparecerão aqui. Toque em uma delas para ver os detalhes.</p>
+        </div>
+      </section>
+
+      <section class="history-panel panel">
+        <div class="history-heading">
+          <div><span class="number">04</span><h3>Cores selecionadas</h3></div>
+          <button id="clearHistory" class="text-button" type="button" disabled>Limpar histórico</button>
+        </div>
+        <div id="historyList" class="history-list">
+          <p class="history-empty">As cores que você selecionar aparecerão aqui.</p>
+        </div>
+      </section>
+    </section>
+
+    <section class="about">
+      <div class="about-icon" aria-hidden="true">i</div>
+      <div>
+        <h2>Por que este site existe?</h2>
+        <p>Pessoas com daltonismo podem ter dificuldade para identificar certas cores em objetos e imagens. O Identifica Cor oferece uma maneira simples de consultar a cor de um ponto da fotografia, mostrando seu nome aproximado e seus códigos.</p>
+         <p class="vision-explanation">Os modos de cores oferecem paletas alternativas da interface para facilitar a diferenciação de elementos. Eles não simulam exatamente a visão de uma pessoa com daltonismo, nem corrigem todas as dificuldades individuais.</p>
+         <p class="disclaimer"><strong>Importante:</strong> esta ferramenta é um apoio para imagens digitais. Ela não diagnostica daltonismo, não identifica objetos e não substitui recursos profissionais ou a percepção das cores no ambiente.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="#">
+      <img class="brand-logo logo-normal" src="imagens/logo.png" alt="Identifica Cor - início">
+      <img class="brand-logo logo-contrast" src="imagens/logo-contraste.png" alt="Identifica Cor - início">
+    </a>
+    <span>Um projeto de acessibilidade visual.</span>
+  </footer>
+  <dialog id="harmonyDialog" class="harmony-dialog" aria-labelledby="harmonyTitle">
+    <div class="dialog-card">
+      <div class="dialog-head">
+        <div>
+          <span class="step-label">EXPLORAR COR</span>
+          <h2 id="harmonyTitle">Semelhantes e combinações</h2>
+        </div>
+        <button id="closeHarmony" class="dialog-close" type="button" aria-label="Fechar">×</button>
+      </div>
+      <div class="dialog-base">
+        <div id="harmonySwatch" class="dialog-swatch" aria-hidden="true"></div>
+        <div class="dialog-base-text">
+          <span class="result-caption">COR SELECIONADA</span>
+          <strong id="harmonyName"></strong>
+          <small id="harmonyHex"></small>
+        </div>
+        <button id="speakHarmony" class="speak-button" type="button" aria-label="Ouvir o nome da cor">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4Z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Ouvir
+        </button>
+      </div>
+      <p class="dialog-tip">Toque em qualquer cor abaixo para copiar o código HEX.</p>
+      <div id="harmonyGroups"></div>
+    </div>
+  </dialog>
+  <div id="liveRegion" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+   <script type="module" src="js/main.js"></script>
+ <div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+   new window.VLibras.Widget('https://vlibras.gov.br/app');
+ </script>
+ </body>
+ </html>

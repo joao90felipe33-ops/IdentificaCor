@@ -57,6 +57,24 @@ Implementação de uma ferramenta independente para comparar duas cores, mantend
 
 Adição planejada da comparação visual com cores sobrepostas, facilitando a observação das diferenças entre tonalidades.
 
+**v1.2.2 — Atualizações pequenas**
+
+Agora o site oferece uma imagem de teste, e o botão brilhante aparece embaixo da imagem
+
+**v1.2.2.1 — Ícone da imagem de teste**
+
+A miniatura do botão de teste foi substituída por um ícone de paleta, sem alterar o carregamento da imagem.
+
+**v1.2.2.2 — Ajustes na interface**
+
+O botão “Explorar cores semelhantes e combinações” mantém seu brilho, agora sem receber a cor identificada como plano de fundo. A área “Sua imagem” não estica para acompanhar a altura do painel “Cor identificada”, evitando espaços em branco desnecessários.
+
+**v1.2.2.3 — Brilho e consistência dos temas**
+
+O botão “Ativar comparador” ganhou um efeito luminoso. Os botões de comparação e de combinações agora acompanham as paletas de protanopia, deuteranopia, tritanopia e acromatopsia, sem permanecer azuis. No alto contraste, os destaques têm halo estático e o botão “Alto contraste” muda de amarelo para branco ao passar o mouse. Animações são desativadas para usuários que preferem movimento reduzido.
+
+**v1.2.2.4 — Correção do tamanho da foto**
+
 ## Objetivo
 
 Continuar desenvolvendo o Identifica Cor, aprimorando seus recursos e explorando novas possibilidades de acessibilidade.

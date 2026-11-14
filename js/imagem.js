@@ -3,6 +3,8 @@ import { showToast } from './feedback.js';
 import { displayColor, resetCurrentColor } from './resultado.js';
 import { extractPalette, renderPalette } from './paleta.js';
 
+const sampleImageButton = document.getElementById("sampleImageButton");
+
 const SAMPLE_RADIUS = 2;
 let currentImage = null;
 // A funcionalidade principal é a padrão; o comparador só intercepta pontos quando ativado.
@@ -40,6 +42,30 @@ dropZone.addEventListener("drop", event => {
   if (file) loadImage(file);
 });
 
+sampleImageButton.addEventListener("click", async () => {
+  try {
+    const response = await fetch("imagens/imagem_teste.png");
+
+    if (!response.ok) {
+      throw new Error("Imagem não encontrada");
+    }
+
+    const blob = await response.blob();
+
+    const file = new File(
+      [blob],
+      "imagem_teste.png",
+      { type: "image/png" }
+    );
+
+    loadImage(file);
+
+  } catch (error) {
+    showToast("Não foi possível carregar a imagem de teste.");
+    console.error(error);
+  }
+});
+
 function loadImage(file) {
   if (!file.type.startsWith("image/")) { showToast("Selecione um arquivo de imagem."); return; }
   if (file.size > 12 * 1024 * 1024) { showToast("A imagem deve ter até 12 MB."); return; }
@@ -55,6 +81,7 @@ function loadImage(file) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       dropZone.hidden = true;
+      sampleImageButton.hidden = true;
       imageStage.hidden = false;
       changeImage.hidden = false;
       imageMessage.textContent = "Imagem carregada. Clique ou toque em um ponto para consultar a cor.";

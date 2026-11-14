@@ -16,7 +16,7 @@ h1 span { color: var(--accent); }
 h2 { font-size: 1.5rem; margin: 5px 0 0; color: var(--navy-dark); letter-spacing: -.7px; }
 .private-label { color: var(--ok-text); font-size: .8125rem; font-weight: 600; background: var(--ok-bg); border-radius: 20px; padding: 9px 12px; }
 .private-label span { font-size: 8px; margin-right: 5px; }
-.tool-grid { display: grid; grid-template-columns: 1.45fr .8fr; gap: 18px; }
+.tool-grid {display: grid; grid-template-columns: 1.45fr 0.8fr; gap: 18px; align-items: stretch;}
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 8px 25px var(--shadow); }
 .image-panel, .result-panel { padding: 22px; min-height: 370px; }
 .panel-title { margin-bottom: 18px; }
@@ -37,7 +37,7 @@ h2 { font-size: 1.5rem; margin: 5px 0 0; color: var(--navy-dark); letter-spacing
 .primary-button:hover { background: var(--btn-hover); transform: translateY(-1px); }
 .image-stage { width: 100%; }
 .canvas-wrap { position: relative; }
-#photoCanvas { display: block; width: 100%; max-height: 290px; object-fit: contain; border-radius: 12px; background: var(--canvas-bg); cursor: crosshair; touch-action: manipulation; }
+#photoCanvas { display: block; width: 100%; max-height: 390px; object-fit: contain; border-radius: 12px; background: var(--canvas-bg); cursor: crosshair; touch-action: manipulation; }
 #photoCanvas:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .pixel-marker { position: absolute; width: 28px; height: 28px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px #1c2545, inset 0 0 0 2px #1c2545; transform: translate(-50%, -50%); pointer-events: none; }
 .canvas-help { color: var(--muted); font-size: .8125rem; line-height: 1.5; margin-top: 12px; display: flex; align-items: flex-start; gap: 8px; }
@@ -51,14 +51,71 @@ h2 { font-size: 1.5rem; margin: 5px 0 0; color: var(--navy-dark); letter-spacing
 .color-result { padding-top: 2px; }
 .large-swatch { display: block; position: relative; width: 100%; height: 108px; padding: 0; overflow: hidden; cursor: pointer; border-radius: 13px; border: 1px solid var(--swatch-border); margin-bottom: 17px; transition: transform .15s, box-shadow .15s; }
 .large-swatch:hover { transform: translateY(-1px); box-shadow: 0 8px 20px #27345c22; }
- .swatch-hint { position: absolute; display: flex; align-items: center; justify-content: center; gap: 8px; left: 10px; right: 10px; bottom: 10px; padding: 11px 12px; border: 1px solid #ffffff85; border-radius: 10px; background: linear-gradient(105deg, #273761, #3b5395, #273761); color: #ffffff; font-size: .8125rem; font-weight: 800; line-height: 1.35; text-align: center; box-shadow: 0 0 0 2px #fff4, 0 0 16px #ffffff9c, 0 6px 18px #101b4470; animation: swatch-glow 2.8s ease-in-out infinite; }
+/* Botão de harmonias: brilho acompanha a paleta ativa. */
+.swatch-hint {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb, var(--btn-bg) 25%, white);
+  border-radius: 10px;
+  background: linear-gradient(105deg, var(--btn-hover), var(--btn-bg), var(--btn-hover));
+  color: var(--btn-text);
+  font-size: .8125rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+  animation: theme-glow 2.8s ease-in-out infinite;
+}
 .swatch-hint svg { width: 18px; height: 18px; flex: 0 0 18px; }
 .swatch-arrow { font-size: 1.3rem; line-height: .8; }
-.large-swatch:hover .swatch-hint, .large-swatch:focus-visible .swatch-hint { background: #1b2a52; box-shadow: 0 0 0 3px #fff9, 0 0 22px #ffffffbb; }
-@keyframes swatch-glow { 0%, 100% { box-shadow: 0 0 0 2px #fff4, 0 0 8px #ffffff80, 0 5px 14px #101b444d; } 50% { box-shadow: 0 0 0 3px #fffd, 0 0 23px #ffffffed, 0 8px 22px #101b4470; } }
-html[data-contrast="high"] .swatch-hint { background: #ffe14d; color: #000000; border: 2px solid #ffffff; box-shadow: none; animation: none; }
-html[data-contrast="high"] .large-swatch:hover .swatch-hint, html[data-contrast="high"] .large-swatch:focus-visible .swatch-hint { background: #ffffff; color: #000000; }
-@media (prefers-reduced-motion: reduce) { .swatch-hint { animation: none; } }
+.large-swatch:hover .swatch-hint,
+.large-swatch:focus-visible .swatch-hint {
+  background: var(--btn-hover);
+}
+
+/* Compartilhado com o botão Ativar comparador. As cores vêm do tema atual. */
+@keyframes theme-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--btn-bg) 38%, white),
+      0 0 9px color-mix(in srgb, var(--btn-bg) 65%, transparent),
+      0 5px 14px #101b4430;
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--btn-bg) 24%, white),
+      0 0 22px color-mix(in srgb, var(--btn-bg) 60%, transparent),
+      0 7px 18px #101b443d;
+  }
+}
+
+/* Alto contraste: halo estático, amarelo no normal e branco ao passar o mouse. */
+html[data-contrast="high"] .swatch-hint {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 2px solid #ffffff;
+  animation: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 13px #ffe14d9c;
+}
+html[data-contrast="high"] .large-swatch:hover .swatch-hint,
+html[data-contrast="high"] .large-swatch:focus-visible .swatch-hint {
+  background: var(--btn-hover);
+  color: #000000;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 13px #ffffff9c;
+}
+@media (prefers-reduced-motion: reduce) {
+  .swatch-hint {
+    animation: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--btn-bg) 38%, white),
+                0 0 12px color-mix(in srgb, var(--btn-bg) 50%, transparent);
+  }
+}
 .result-caption { color: var(--faint); font-size: .75rem; letter-spacing: 1.2px; font-weight: 800; }
 .name-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin: 4px 0 15px; }
 .color-result h4 { font-size: 1.5625rem; color: var(--navy-dark); margin: 0; letter-spacing: -.6px; }
@@ -125,3 +182,83 @@ body.modal-open { overflow: hidden; }
 .chip-info strong { font-size: .8125rem; }
 .chip-info small { color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
 [hidden] { display: none !important; }
+
+/* Imagem de teste */
+
+.sample-image-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 14px;
+
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  color: var(--navy-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+/* Ícone de paleta no botão de imagem de teste. */
+.sample-image-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--navy);
+}
+
+.sample-image-button:hover {
+  background: var(--surface-hover);
+  border-color: var(--navy);
+}
+
+.sample-image-button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.sample-image-button[hidden] {
+  display: none !important;
+}
+
+
+/* Prévia da cor identificada */
+
+.color-preview {
+  width: 100%;
+  height: 100px;
+  border-radius: 13px;
+  border: 1px solid var(--swatch-border);
+  margin-bottom: 12px;
+}
+
+/* Botão abaixo da prévia */
+
+.color-result .large-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  min-height: 58px;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  margin-bottom: 17px;
+}
+
+.color-result .large-swatch .swatch-hint {
+  position: static;
+  width: 100%;
+  min-height: 50px;
+}

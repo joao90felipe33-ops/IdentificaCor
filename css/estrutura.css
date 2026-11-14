@@ -17,3 +17,11 @@ button { cursor: pointer; }
 .tool-button:hover:not(:disabled) { background: var(--navy-soft); }
 .tool-button:disabled { opacity: .45; cursor: not-allowed; }
  .tool-button[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-text); border-color: var(--btn-bg); }
+
+/* No alto contraste, o botão ativo também fica branco no hover. */
+html[data-contrast="high"] #contrastToggle[aria-pressed="true"]:hover,
+html[data-contrast="high"] #contrastToggle[aria-pressed="true"]:focus-visible {
+  background: var(--btn-hover);
+  color: #000000;
+  border-color: var(--btn-hover);
+}

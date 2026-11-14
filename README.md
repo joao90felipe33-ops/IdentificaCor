@@ -75,6 +75,12 @@ O botão “Ativar comparador” ganhou um efeito luminoso. Os botões de compar
 
 **v1.2.2.4 — Correção do tamanho da foto**
 
+**v1.3.0 — Novas funcionalidades**
+
+Agora temos a funçao de usar a câmera do celular, e também houveram atualizações de layout para celular.
+
+**v1.3.1 — Correção de bugs das novas funcionalidades**
+
 ## Objetivo
 
 Continuar desenvolvendo o Identifica Cor, aprimorando seus recursos e explorando novas possibilidades de acessibilidade.

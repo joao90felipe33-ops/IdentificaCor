@@ -52,10 +52,10 @@ export function applySettings() {
     option.classList.toggle("is-active", selected);
   });
   visionNote.textContent = highContrast
-    ? "Alto contraste está ativo e tem prioridade sobre o modo de cores. A imagem e seus códigos continuam originais."
+    ? "O alto contraste está ativo e tem prioridade sobre os filtros. As imagens e os resultados permanecem originais."
     : vision === "normal"
-      ? "Os modos de cores alteram somente a interface, não as cores nem os códigos da imagem enviada."
-      : `Paleta de interface para ${VISION_LABELS[vision]} ativa. Não é uma simulação médica nem altera sua fotografia ou seus códigos HEX/RGB.`;
+      ? "Os filtros alteram apenas as cores do site. A imagem enviada e os resultados permanecem originais."
+      : `Paleta ${VISION_LABELS[vision]} ativa. A imagem enviada e os resultados permanecem originais.`;
   requestAnimationFrame(positionMarker);
 }
 

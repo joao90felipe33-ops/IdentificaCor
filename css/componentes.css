@@ -16,7 +16,7 @@ h1 span { color: var(--accent); }
 h2 { font-size: 1.5rem; margin: 5px 0 0; color: var(--navy-dark); letter-spacing: -.7px; }
 .private-label { color: var(--ok-text); font-size: .8125rem; font-weight: 600; background: var(--ok-bg); border-radius: 20px; padding: 9px 12px; }
 .private-label span { font-size: 8px; margin-right: 5px; }
-.tool-grid {display: grid; grid-template-columns: 1.45fr 0.8fr; gap: 18px; align-items: stretch;}
+.tool-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.8fr); gap: 18px; align-items: stretch;}
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 8px 25px var(--shadow); }
 .image-panel, .result-panel { padding: 22px; min-height: 370px; }
 .panel-title { margin-bottom: 18px; }
@@ -37,7 +37,7 @@ h2 { font-size: 1.5rem; margin: 5px 0 0; color: var(--navy-dark); letter-spacing
 .primary-button:hover { background: var(--btn-hover); transform: translateY(-1px); }
 .image-stage { width: 100%; }
 .canvas-wrap { position: relative; }
-#photoCanvas { display: block; width: 100%; max-height: 390px; object-fit: contain; border-radius: 12px; background: var(--canvas-bg); cursor: crosshair; touch-action: manipulation; }
+#photoCanvas { display: block; width: 100%; max-height: 290px; object-fit: contain; border-radius: 12px; background: var(--canvas-bg); cursor: crosshair; touch-action: manipulation; }
 #photoCanvas:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .pixel-marker { position: absolute; width: 28px; height: 28px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px #1c2545, inset 0 0 0 2px #1c2545; transform: translate(-50%, -50%); pointer-events: none; }
 .canvas-help { color: var(--muted); font-size: .8125rem; line-height: 1.5; margin-top: 12px; display: flex; align-items: flex-start; gap: 8px; }
@@ -261,4 +261,109 @@ body.modal-open { overflow: hidden; }
   position: static;
   width: 100%;
   min-height: 50px;
+}
+
+/* Ações alternativas: câmera e imagem de teste */
+.image-alternatives {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.image-alternatives .sample-image-button {
+  width: auto;
+  flex: 1 1 210px;
+  min-height: 48px;
+  margin-top: 0;
+}
+.paste-hint {
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+.paste-hint kbd {
+  font: inherit;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+/* Câmera em uma janela independente da imagem atual */
+.camera-dialog {
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  width: min(600px, 94vw);
+  max-height: 92dvh;
+  box-shadow: 0 22px 60px #1c254555;
+}
+.camera-dialog::backdrop { background: #101a38ad; }
+.camera-card { padding: 20px; }
+.camera-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; margin-bottom: 14px; }
+.camera-head h2 { margin: 5px 0 0; }
+.camera-video {
+  display: block;
+  width: 100%;
+  max-height: 55dvh;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: var(--canvas-bg);
+  border-radius: 12px;
+}
+.camera-info { margin: 12px 0; color: var(--muted); font-size: .83rem; line-height: 1.5; }
+.camera-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; align-items: center; }
+.camera-actions .primary-button { margin: 0; min-height: 42px; }
+.camera-actions .primary-button:disabled { opacity: .5; cursor: not-allowed; }
+.camera-secondary {
+  padding: 10px 14px;
+  min-height: 42px;
+  border: 1.5px solid var(--control-border);
+  color: var(--navy-dark);
+  background: var(--surface);
+  border-radius: 9px;
+  font-weight: 700;
+}
+.camera-secondary:hover:not(:disabled) { background: var(--surface-hover); }
+.camera-secondary:disabled { opacity: .5; }
+.camera-secondary:focus-visible,
+.camera-actions .primary-button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+@media (max-width: 420px) {
+  .camera-card { padding: 14px; }
+  .camera-actions > button { flex: 1 1 130px; }
+}
+
+/* Organização vertical dos cartões */
+
+.image-panel,
+.result-panel {
+  min-height: 0;
+}
+
+.result-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Centraliza o aviso antes de identificar uma cor */
+
+.result-panel .empty-result {
+  flex: 1;
+}
+
+/* Mantém os cartões independentes no celular */
+
+@media (max-width: 760px) {
+  .tool-grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .image-panel,
+  .result-panel {
+    min-height: 0;
+  }
 }

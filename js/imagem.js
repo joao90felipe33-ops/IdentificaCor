@@ -66,7 +66,7 @@ sampleImageButton.addEventListener("click", async () => {
   }
 });
 
-function loadImage(file) {
+export function loadImage(file) {
   if (!file.type.startsWith("image/")) { showToast("Selecione um arquivo de imagem."); return; }
   if (file.size > 12 * 1024 * 1024) { showToast("A imagem deve ter até 12 MB."); return; }
   const reader = new FileReader();

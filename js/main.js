@@ -6,6 +6,8 @@ import { hideMarker } from './imagem.js';
 import { initVoice } from './feedback.js';
 import { initHarmonies } from './combinacoes.js';
 import { initComparator } from './comparador.js';
+import './camera.js';
+import './colar.js';
 
 initHistory(item => {
   hideMarker();
